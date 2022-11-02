@@ -184,12 +184,19 @@ while True:
             seat_lst.append(seat_letter)
         seat_lst_set = set(seat_lst)
         print('\n')
-        print('-'*20 + 'PURCHASE INFORMATION' + '-'*25)
+        # print(len(seat_lst_set))
+        if len(seat_lst_set) != 0:
 
-        print(f'CUSTOMER NAME: {name}' + ' '*25 + f'PHONE NUMBER: {phone_num}')
-        hall_one.customer_show(id_show)
-        print('BOOKED SEATS ARE: ' + ' '.join(map(str, seat_lst_set)))
-        print('\n')
+            print('-'*20 + 'PURCHASE INFORMATION' + '-'*25)
+
+            print(f'CUSTOMER NAME: {name}' + ' ' *
+                  25 + f'PHONE NUMBER: {phone_num}')
+            hall_one.customer_show(id_show)
+            print(f'{len(seat_lst_set)} BOOKED SEATS ARE: ' +
+                  ' '.join(map(str, seat_lst_set)))
+
+        else:
+            print('NO TICKET BOOKED')
 
     if option == 4:
         break
