@@ -32,10 +32,11 @@ class Hall:
 
                 row = chr(a+65-1)
                 col = str(b)
-                seat_letter = list()
-                seat_letter.append(row)
-                seat_letter.append(col)
-                seat_letter = ''.join(seat_letter)  # converting (2,3) to B3
+                seat_letter_lst = list()
+                seat_letter_lst.append(row)
+                seat_letter_lst.append(col)
+                # converting (2,3) to B3
+                seat_letter = ''.join(seat_letter_lst)
 
                 try:
 
@@ -45,19 +46,22 @@ class Hall:
                         self.seats[show_id] = show_seats
                         print(f'{seat_letter} BOOKED SUCCESSFULLY')
                         return seat_letter
+
                     else:
-                        print(f'{seat_letter} IS ALREADY BOOKED')
-                        return seat_letter
+                        # SEAT WAS ALREADY BOOKED
+                        print(f'{seat_letter} IS ALREADY BOOKED\n')
+                        seat_letter = ''
+                        # return seat_letter
                 except IndexError:
-                    print('Invalid Row Column')
+                    print('Invalid Row Column\n')
                     seat_letter = ''
 
                 except NameError:
-                    print('Invalid Seat Chosen')
+                    print('Invalid Seat Chosen\n')
                     seat_letter = ''
 
                 except ValueError:
-                    print('Invalid input given')
+                    print('Invalid input given\n')
                     seat_letter = ''
 
                 finally:
@@ -137,9 +141,9 @@ star_sineplex = Star_Cinema()
 
 star_sineplex.entry_hall(hall_one)
 
-hall_one.entry_show('ae123', 'BLACK ADAM', '10:00 PM')
-hall_one.entry_show('bc245', 'SPIDER-MAN', '12:00 PM')
-hall_one.entry_show('zp785', 'INCEPTIONS', '06:00 PM')
+hall_one.entry_show('ae123', 'BLACK ADAM', '12:00 AM')
+hall_one.entry_show('bc245', 'SPIDER-MAN', '03:00 PM')
+hall_one.entry_show('zp785', 'INCEPTION ', '06:00 PM')
 
 print("WELCOME TO STAR SINEPLEX, RAJSHAHI-----------")
 
@@ -156,32 +160,43 @@ while True:
 
     if option == 3:
 
-        name = input("ENTER CUSTOMER NAME: ")
-        phone_num = input("ENTER CUSTOMER PHONE NUMBER: ")
         id_show = input('ENTER SHOW ID: ')
         id_check = hall_one.id_validation(id_show)
 
         if id_check == False:
-            print('SHOW ID NOT MATCHED')
+            print('SHOW ID NOT MATCHED, PLEASE TRY AGAIN!!!')
             continue
 
+        name = input("ENTER YOUR NAME: ")
+        phone_num = input("ENTER YOUR PHONE NUMBER: ")
         hall_one.view_available_seats(id_show)
         total_seats = int(input('HOW MANY SEATS: '))
         seat_lst = list()
+
         for i in range(total_seats):
-            seat_no = input('CHOOSE YOUR SEAT:')
-            row = ord(seat_no[0]) - 65 + 1
-            try:
+            flag = True
+            while flag:
 
-                col = int(seat_no[1])
+                seat_no = input('CHOOSE YOUR SEAT:')
+                row = ord(seat_no[0]) - 65 + 1
+                try:
 
-            except ValueError:
-                print('Invalid input given')
-                continue
-            seat_letter = hall_one.book_seats(
-                name, phone_num, id_show, (row, col))
+                    col = int(seat_no[1])
 
-            seat_lst.append(seat_letter)
+                except ValueError:
+                    print('Invalid input given')
+                    continue
+                seat_letter = hall_one.book_seats(
+                    name, phone_num, id_show, (row, col))  # RETURNED SEAT LETTER ,either B3 or ''
+
+                if seat_letter == '':
+                    print('PLEASE CHOOSE YOUR SEAT AGAIN')
+                    continue
+
+                else:
+                    seat_lst.append(seat_letter)
+                    flag = False
+
         seat_lst_set = set(seat_lst)
         print('\n')
         # print(len(seat_lst_set))
